@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hazabral – Kids Moods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFE3EC;--ink:#2B2350;--red:#FF5A5F;--mint:#2EC4B6;--sun:#FFC93C;--grape:#7B5CFF;--green:#B8F0A8;--sky:#FFC93C}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:'Fredoka','Noto Sans Devanagari','Noto Sans Bengali','Trebuchet MS',system-ui,sans-serif;font-size:18px}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 20px 48px}
+.top{display:grid;grid-template-columns:1fr minmax(240px,420px) 1fr;align-items:center;gap:16px;margin-bottom:20px}
+header{display:flex;align-items:center;gap:14px}
+.logo{width:56px;height:56px;border-radius:16px;background:var(--sky);border:3px solid var(--ink);box-shadow:0 4px 0 var(--ink);display:grid;place-items:center;flex:none}
+.logo{font-size:32px;line-height:1}
+h1{margin:0;font-size:clamp(30px,6vw,46px);font-weight:600;line-height:1}
+.tag{margin:4px 0 0;font-size:17px;opacity:.8}
+.search{display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--ink);border-radius:999px;box-shadow:0 4px 0 var(--ink);padding:0 16px;height:52px}
+.search:focus-within{outline:3px solid var(--grape);outline-offset:3px}
+.search svg{width:22px;height:22px;flex:none}
+.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;color:var(--ink)}
+.langs{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}.langs:last-of-type{margin-bottom:34px}.card small{display:block;margin:4px 4px 0;font-size:15px;opacity:.7}
+.chip{font:inherit;font-weight:600;padding:9px 22px;border-radius:999px;border:3px solid var(--ink);background:#fff;color:var(--ink);box-shadow:0 4px 0 var(--ink);cursor:pointer;transition:transform .1s,box-shadow .1s}
+.chip:hover{background:#F3FFEF}
+.chip[aria-pressed="true"]{background:var(--green)}
+.chip:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.chip:disabled{opacity:.35;cursor:not-allowed}.chip small{font-size:.8em;opacity:.7;margin-left:4px}.status{text-align:center;margin:-10px 0 22px;font-weight:500;opacity:.85}
+.chip:focus-visible{outline:3px solid var(--grape);outline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:26px}
+.empty{grid-column:1/-1;text-align:center;padding:40px 10px;font-size:20px;opacity:.85}
+.card{display:block;text-decoration:none;color:inherit;outline:none}
+.thumb{position:relative;aspect-ratio:16/9;border-radius:20px;border:3px solid var(--ink);background:var(--c);box-shadow:0 6px 0 var(--ink);overflow:hidden;transition:transform .15s,box-shadow .15s}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.play{position:absolute;right:10px;bottom:10px;width:44px;height:44px;border-radius:50%;background:#fff;border:3px solid var(--ink);display:grid;place-items:center}
+.play::after{content:"";border-style:solid;border-width:8px 0 8px 13px;border-color:transparent transparent transparent var(--ink);margin-left:3px}
+.card p{margin:16px 4px 0;font-weight:500;font-size:20px}
+.card:hover .thumb,.card:focus-visible .thumb{transform:translateY(-4px);box-shadow:0 10px 0 var(--ink)}
+.card:focus-visible p{text-decoration:underline}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;background:var(--sun);color:var(--ink);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);font:inherit;font-weight:600;text-decoration:none;cursor:pointer;transition:transform .1s,box-shadow .1s}
+.btn:hover{background:#FFD65E}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn:focus-visible{outline:3px solid var(--grape);outline-offset:3px}
+.bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+.bar h2{margin:0;font-size:clamp(24px,5vw,34px);font-weight:600}
+.stage{max-width:900px}
+video{display:block;width:100%;background:#000;border-radius:22px;border:4px solid var(--ink);box-shadow:0 8px 0 var(--ink)}
+.more{margin:44px 0 18px;font-size:24px;font-weight:600}
+.back{margin:0 0 20px}
+[hidden]{display:none!important}
+@media (max-width:760px){.top{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.thumb,.btn,.chip{transition:none}}
+.mood-dot{position:absolute;left:10px;top:10px;width:42px;height:42px;border-radius:50%;background:#fff;border:3px solid var(--ink);display:grid;place-items:center;font-size:21px;line-height:1}
+.card .mood-name{display:block;margin:4px 4px 0;font-size:16px;opacity:.75}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:4px 16px;font-weight:600;box-shadow:0 3px 0 var(--ink);margin:0 0 18px}
+.parts{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:26px}
+.count{font-weight:600;font-size:20px}
+.btn[aria-disabled="true"]{opacity:.35;pointer-events:none}
+.hint{text-align:center;margin:18px 0 0;font-size:16px;opacity:.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <main id="home">
+    <p class="back"><a class="btn" href="https://subhankarsarkar.github.io/kidsworld/">&larr; Kids World</a></p>
+    <div class="top">
+      <header>
+        <div class="logo" aria-hidden="true">😊</div>
+        <div><h1>Hazabral</h1><p class="tag">Kids moods – pick a clip and press play.</p></div>
+      </header>
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+        <input type="search" id="q" placeholder="Search moods, e.g. laughing, crying" aria-label="Search" autocomplete="off">
+      </label>
+      <span aria-hidden="true"></span>
+    </div>
+    <div id="filters"></div>
+    <p class="status" id="status" aria-live="polite"></p>
+    <div class="grid" id="grid"></div>
+  </main>
+  <main id="watch" hidden>
+    <div class="bar"><a class="btn" href="#">&larr; Back to Home</a><h2 id="now"></h2></div>
+    <p class="badge" id="badge"></p>
+    <div class="stage"><video id="video" controls playsinline></video>
+      <div class="parts">
+        <a class="btn" id="prev" href="#">&larr; Previous</a>
+        <span class="count" id="count"></span>
+        <a class="btn" id="next" href="#">Next &rarr;</a>
+      </div>
+      <p class="hint">Tip: use the &larr; &rarr; keys on your keyboard to change clips.</p>
+    </div>
+    <h3 class="more" id="moreTitle"></h3>
+    <div class="grid" id="moreGrid"></div>
+    <p style="margin-top:36px"><a class="btn" href="#">&larr; Back to Home</a></p>
+  </main>
+</div>
+<script>
+  // Moods shown as buttons. A picture's "mood" must match one of these names exactly.
+  const MOODS = [
+    {"name": "Laughing", "icon": "😂"},
+    {"name": "Playing", "icon": "🎈"},
+    {"name": "Crying", "icon": "😢"},
+    {"name": "Angry", "icon": "😠"},
+    {"name": "Happy", "icon": "😊"},
+    {"name": "Surprised", "icon": "😲"},
+    {"name": "Sleepy", "icon": "😴"},
+    {"name": "Curious", "icon": "🤔"},
+    {"name": "Shy", "icon": "🙈"},
+    {"name": "Loving", "icon": "🥰"},
+    {"name": "Scared", "icon": "😨"},
+    {"name": "Excited", "icon": "🤩"}
+  ];
+
+  // One line = one clip. For a clip with id N the files are:
+  //   cover picture : thumbs/N.jpg  (or .png / .jpeg / .webp)
+  //   video         : videos/N.mp4  (H.264 + AAC)
+  // To add a clip, add a new line at the END with the next number and keep
+  // the old ones as they are. The "mood" must match a name in MOODS above.
+  const clips = [
+    {"id": 1, "title": "Laughing Out Loud", "mood": "Laughing", "tags": "laugh giggle smile fun"},
+    {"id": 2, "title": "Playtime Fun", "mood": "Playing", "tags": "play toys game park"},
+    {"id": 3, "title": "Big Tears", "mood": "Crying", "tags": "cry tears sad upset"},
+    {"id": 4, "title": "Grumpy Face", "mood": "Angry", "tags": "angry mad grumpy upset"},
+    {"id": 5, "title": "Happy Smile", "mood": "Happy", "tags": "happy smile joy cheerful"},
+    {"id": 6, "title": "What a Surprise!", "mood": "Surprised", "tags": "surprise wow shocked"},
+    {"id": 7, "title": "Sleepy Eyes", "mood": "Sleepy", "tags": "sleepy tired yawn bedtime"},
+    {"id": 8, "title": "Curious Look", "mood": "Curious", "tags": "curious wonder thinking"}
+  ];
+
+  const colors = ["var(--red)", "var(--mint)", "var(--sun)", "var(--grape)"];
+  const $ = id => document.getElementById(id);
+  const iconOf = m => (MOODS.find(x => x.name === m) || {icon: "🙂"}).icon;
+  const byId = id => clips.find(p => p.id === id);
+  let mood = "";
+  let query = "";
+  let cur = null;      // {id, list}
+  let homeScroll = 0;
+
+  function matches(p, skipMood) {
+    const words = query.split(/\s+/).filter(Boolean);
+    const text = (p.title + " " + p.tags + " " + p.mood).toLowerCase();
+    return (skipMood !== undefined ? (!skipMood || p.mood === skipMood) : (!mood || p.mood === mood)) && words.every(w => text.includes(w));
+  }
+
+  function setThumb(img, id) {
+    const tries = ["png", "jpeg", "webp"].map(x => "thumbs/" + id + "." + x);
+    img.onerror = () => { const next = tries.shift(); next ? img.src = next : img.remove(); };
+    img.src = "thumbs/" + id + ".jpg";
+  }
+
+  function makeCard(p, i) {
+    const a = document.createElement("a");
+    a.className = "card";
+    a.href = "#clip-" + p.id;
+    a.style.setProperty("--c", colors[i % colors.length]);
+    a.innerHTML = '<div class="thumb"><img alt="" loading="lazy"><span class="mood-dot" aria-hidden="true"></span><span class="play" aria-hidden="true"></span></div><p></p><span class="mood-name"></span>';
+    a.querySelector(".mood-dot").textContent = iconOf(p.mood);
+    a.querySelector("p").textContent = p.title;
+    a.querySelector(".mood-name").textContent = p.mood;
+    setThumb(a.querySelector("img"), p.id);
+    return a;
+  }
+
+  function buildChips() {
+    const row = document.createElement("div");
+    row.className = "langs";
+    row.setAttribute("role", "group");
+    row.setAttribute("aria-label", "Moods");
+    ["", ...MOODS.map(m => m.name)].forEach(v => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.v = v;
+      b.onclick = () => { mood = v; renderHome(); };
+      row.appendChild(b);
+    });
+    $("filters").appendChild(row);
+  }
+
+  function syncChips() {
+    document.querySelectorAll(".chip").forEach(b => {
+      const v = b.dataset.v;
+      const n = clips.filter(p => matches(p, v)).length;
+      const on = mood === v;
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.disabled = n === 0 && !on;
+      b.textContent = (v ? iconOf(v) + " " + v : "All Moods") + " ";
+      const sm = document.createElement("small"); sm.textContent = n; b.appendChild(sm);
+    });
+  }
+
+  function renderHome() {
+    const grid = $("grid");
+    grid.innerHTML = "";
+    const shown = clips.filter(p => matches(p));
+    syncChips();
+    $("status").textContent = shown.length + (shown.length === 1 ? " clip" : " clips") + (mood ? " for " + mood : "");
+    if (shown.length === 0) {
+      const p = document.createElement("p");
+      p.className = "empty";
+      p.textContent = "Nothing found. Try fewer words or tap All Moods.";
+      grid.appendChild(p);
+      return;
+    }
+    shown.forEach((p, i) => grid.appendChild(makeCard(p, i)));
+  }
+
+  function setNav(el, id) {
+    if (id) { el.href = "#clip-" + id; el.removeAttribute("aria-disabled"); }
+    else { el.removeAttribute("href"); el.setAttribute("aria-disabled", "true"); }
+  }
+
+  function route() {
+    const m = location.hash.match(/^#clip-(\d+)$/);
+    const p = m ? byId(Number(m[1])) : null;
+    if (p) {
+      if (!$("home").hidden) homeScroll = window.scrollY;
+      let list = clips.filter(x => matches(x));
+      if (!list.includes(p)) list = clips.filter(x => x.mood === p.mood);
+      const idx = list.indexOf(p);
+      cur = { id: p.id, list, idx };
+      $("home").hidden = true;
+      $("watch").hidden = false;
+      $("now").textContent = p.title;
+      $("badge").textContent = iconOf(p.mood) + " " + p.mood;
+      const v = $("video");
+      v.src = "videos/" + p.id + ".mp4";
+      v.play().catch(() => {});
+      const prev = list[idx - 1], next = list[idx + 1];
+      setNav($("prev"), prev && prev.id);
+      setNav($("next"), next && next.id);
+      $("count").textContent = (idx + 1) + " of " + list.length;
+      const more = $("moreGrid");
+      more.innerHTML = "";
+      clips.forEach((x, j) => { if (x !== p && x.mood === p.mood) more.appendChild(makeCard(x, j)); });
+      $("moreTitle").textContent = "More " + p.mood.toLowerCase() + " clips";
+      $("moreTitle").hidden = more.children.length === 0;
+      window.scrollTo(0, 0);
+    } else {
+      cur = null;
+      const v = $("video");
+      v.pause(); v.removeAttribute("src"); v.load();
+      $("watch").hidden = true;
+      $("home").hidden = false;
+      window.scrollTo(0, homeScroll);
+    }
+  }
+
+  function go(step) {
+    if (!cur) return;
+    const n = cur.list[cur.idx + step];
+    if (n) location.hash = "#clip-" + n.id;
+  }
+
+  document.addEventListener("keydown", e => {
+    if (!cur || e.target.tagName === "INPUT") return;
+    if (e.key === "ArrowRight") go(1);
+    if (e.key === "ArrowLeft") go(-1);
+    if (e.key === "Escape") location.hash = "";
+  });
+
+  $("q").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); renderHome(); });
+  buildChips();
+  renderHome();
+  window.addEventListener("hashchange", route);
+  route();
+</script>
+</body>
+</html>
